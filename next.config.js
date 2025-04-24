@@ -1,3 +1,5 @@
+const path = require("path");
+
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
@@ -16,16 +18,23 @@ const nextConfig = {
   assetPrefix: "",
   // Explicitly include video files in the build
   webpack(config) {
+    // Add support for video files
     config.module.rules.push({
       test: /\.(mp4|webm)$/,
       type: "asset/resource",
       generator: {
         filename: "static/media/[name].[hash][ext]",
       },
-    })
+    });
 
-    return config
+    // Add alias for `@` to simplify imports
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      "@": path.resolve(__dirname),
+    };
+
+    return config;
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
