@@ -12,10 +12,6 @@ const nextConfig = {
   },
   // Enable static exports for hosting on any static hosting service
   output: "export",
-  // Disable server components for static export
-  experimental: {
-    appDir: true,
-  },
   // Ensure all assets are properly copied to the output directory
   assetPrefix: "",
   // Explicitly include video files in the build
