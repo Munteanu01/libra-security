@@ -1,0 +1,137 @@
+export const projects = [
+  {
+    id: "mall-veranda",
+    title: "MALL VERANDA",
+    category: "commercial",
+    categoryLabel: "Spații Comerciale",
+    image: "/images/projects/retail-security-cameras.png",
+    details: [
+      "Instalațiile de curenți tari",
+      "Tablourile electrice de comandă pentru instalația de climatizare/desfumare",
+      "Tablourile electrice pentru instalația de iluminat normal și de siguranță",
+      "Instalație detecție incendiu parter",
+      "Sisteme de degivrare rampe și țevi",
+    ],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/retail-security-cameras.png",
+      "/images/projects/security-monitoring-station.png",
+      "/images/projects/hikvision-equipment.png",
+      "/images/projects/fire-alarm-system.png",
+      "/images/projects/network-rack.png",
+    ],
+    location: "București, România",
+    year: "2019",
+    client: "Veranda Mall",
+    description: "Proiect complex de instalații electrice și sisteme de securitate pentru Mall Veranda.",
+  },
+  {
+    id: "kaufland",
+    title: "KAUFLAND ROMÂNIA",
+    category: "commercial",
+    categoryLabel: "Spații Comerciale",
+    image: "/images/projects/hikvision-server-rack.png",
+    details: ["Inlocuire si instalare Sistem CCTV"],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/hikvision-server-rack.png",
+      "/images/projects/outdoor-ptz-camera.png",
+      "/images/projects/network-rack.png",
+      "/images/projects/security-monitoring-station.png",
+      "/images/projects/retail-security-cameras.png",
+    ],
+    location: "Multiple locații, România",
+    year: "2020",
+    client: "Kaufland România",
+    description: "Proiect de înlocuire și instalare a sistemelor CCTV pentru magazinele Kaufland din România.",
+  },
+  {
+    id: "valletta-residence",
+    title: "VALLETTA RESIDENCE",
+    category: "residential",
+    categoryLabel: "Rezidențial",
+    image: "/images/projects/control-panel-wiring.png",
+    details: [
+      "Instalațiile electrice de curenți tari",
+      "Tablourile electrice, instalații de iluminat și prize, automatizări desfumare",
+      "Sistemul de desfumare și evacuare a gazelor din parcarea subterană",
+      "Structuri cablate sisteme: detecție incendiu, video interfonie, bariere auto, control acces",
+    ],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/control-panel-wiring.png",
+      "/images/projects/fire-alarm-system.png",
+      "/images/projects/cable-conduits.png",
+      "/images/projects/outdoor-ptz-camera.png",
+    ],
+    location: "București, România",
+    year: "2021",
+    client: "Valletta Development",
+    description:
+      "Proiect complex de instalații electrice și sisteme de securitate pentru complexul rezidențial Valletta Residence.",
+  },
+  {
+    id: "timken",
+    title: "TIMKEN",
+    category: "industrial",
+    categoryLabel: "Industrial",
+    image: "/images/projects/server-rack-cabling.png",
+    details: ["Instalații electrice curenți tari", "Tablouri electrice", "Sisteme de iluminat industrial"],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/server-rack-cabling.png",
+      "/images/projects/cable-conduits.png",
+      "/images/projects/control-panel-wiring.png",
+      "/images/projects/network-rack.png",
+    ],
+    location: "Ploiești, România",
+    year: "2018",
+    client: "TIMKEN",
+    description: "Proiect de instalații electrice pentru hala de producție rulmenți TIMKEN din West Park Ploiești.",
+  },
+  {
+    id: "prysmian",
+    title: "PRYSMIAN",
+    category: "industrial",
+    categoryLabel: "Industrial",
+    image: "/images/projects/network-rack.png",
+    details: ["Instalații electrice curenți tari", "Sisteme de iluminat industrial"],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/network-rack.png",
+      "/images/projects/hikvision-equipment.png",
+      "/images/projects/server-rack-cabling.png",
+      "/images/projects/cable-conduits.png",
+    ],
+    location: "Slatina, România",
+    year: "2019",
+    client: "PRYSMIAN",
+    description: "Proiect de instalații electrice pentru hala de producție fibră optică PRYSMIAN din Slatina.",
+  },
+  {
+    id: "michelin",
+    title: "MICHELIN",
+    category: "industrial",
+    categoryLabel: "Industrial",
+    image: "/images/projects/hikvision-equipment.png",
+    details: ["Instalații electrice curenți tari", "Sisteme de iluminat industrial"],
+    // Adăugați sau modificați imagini aici
+    images: [
+      "/images/projects/hikvision-equipment.png",
+      "/images/projects/server-rack-cabling.png",
+      "/images/projects/network-rack.png",
+      "/images/projects/control-panel-wiring.png",
+    ],
+    location: "Florești, România",
+    year: "2018",
+    client: "MICHELIN",
+    description: "Proiect de instalații electrice pentru depozitul de cauciucuri MICHELIN din Florești.",
+  },
+]
+
+export const projectCategories = [
+  { value: "all", label: "Toate proiectele" },
+  { value: "commercial", label: "Spații Comerciale" },
+  { value: "residential", label: "Rezidențial" },
+  { value: "industrial", label: "Industrial" },
+]
