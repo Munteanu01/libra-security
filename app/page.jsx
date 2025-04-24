@@ -3,19 +3,19 @@
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 
-// Import components
-import HeroSection from "@/components/hero-slideshow"
-import ServicesSection from "@/components/services-section"
-import AboutSection from "@/components/about-section"
-import PartnersSection from "@/components/partners-section"
-import PartnershipsSection from "@/components/partnerships-section"
-import ProjectsSection from "@/components/projects-section"
-import ContactSection from "@/components/contact-section"
-import FaqSection from "@/components/faq-section"
-import Footer from "@/components/footer"
-import Navbar from "@/components/navbar"
-import TimelineSection from "@/components/timeline-section"
-import GallerySection from "@/components/gallery-section"
+// Import components using relative paths
+import HeroSection from "../components/hero-slideshow"
+import ServicesSection from "../components/services-section"
+import AboutSection from "../components/about-section"
+import PartnersSection from "../components/partners-section"
+import PartnershipsSection from "../components/partnerships-section"
+import ProjectsSection from "../components/projects-section"
+import ContactSection from "../components/contact-section"
+import FaqSection from "../components/faq-section"
+import Footer from "../components/footer"
+import Navbar from "../components/navbar"
+import TimelineSection from "../components/timeline-section"
+import GallerySection from "../components/gallery-section"
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("hero")
@@ -23,7 +23,6 @@ export default function Home() {
   const router = useRouter()
 
   const scrollToSection = (sectionId) => {
-    // Verificăm dacă secțiunea există pe pagina curentă
     const section = document.getElementById(sectionId)
     if (section) {
       section.scrollIntoView({ behavior: "smooth" })
