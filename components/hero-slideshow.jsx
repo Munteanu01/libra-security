@@ -4,10 +4,18 @@ import { Mail, Phone, Shield, Award } from "lucide-react"
 
 export default function HeroSection({ scrollToSection }) {
   const [isMounted, setIsMounted] = useState(false)
+  const [videoVisible, setVideoVisible] = useState(false)
   const videoRef = useRef(null)
 
   useEffect(() => {
     setIsMounted(true)
+    const videoTimer = setTimeout(() => {
+      setVideoVisible(true)
+    }, 10) // Poți ajusta această valoare dacă vrei o întârziere minimă
+
+    return () => {
+      clearTimeout(videoTimer)
+    }
   }, [])
 
   useEffect(() => {
@@ -20,9 +28,12 @@ export default function HeroSection({ scrollToSection }) {
 
   return (
     <section id="hero" className="relative min-h-screen overflow-hidden bg-black">
-      {/* Background video */}
+      {/* Background video with fade-in animation */}
       {isMounted && (
-        <div className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 z-0 transition-opacity duration-1000"
+          style={{ opacity: videoVisible ? 1 : 0 }}
+        >
           <video
             ref={videoRef}
             autoPlay
@@ -121,7 +132,7 @@ export default function HeroSection({ scrollToSection }) {
             <Shield className="w-4 h-4 text-blue-400" />
             <span className="text-sm text-white">Autorizare IGSU</span>
           </div>
-          <div className="w-px h-6 bg-white/20"></div>
+          <div className="w-px h-6 bg-gradient-to-b from-white/30 via-white/10 to-transparent"></div>
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-green-400" />
             <span className="text-sm text-white">Autorizare IGPR</span>

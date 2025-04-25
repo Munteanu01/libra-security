@@ -2,20 +2,14 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-
-// Import components using relative paths
 import HeroSection from "../components/hero-slideshow"
 import ServicesSection from "../components/services-section"
-import AboutSection from "../components/about-section"
-import PartnersSection from "../components/partners-section"
-import PartnershipsSection from "../components/partnerships-section"
+import TimelineSection from "../components/timeline-section"
 import ProjectsSection from "../components/projects-section"
+import GallerySection from "../components/gallery-section"
+import PartnershipsSection from "../components/technologii"
 import ContactSection from "../components/contact-section"
 import FaqSection from "../components/faq-section"
-import Footer from "../components/footer"
-import Navbar from "../components/navbar"
-import TimelineSection from "../components/timeline-section"
-import GallerySection from "../components/gallery-section"
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("hero")
@@ -57,16 +51,9 @@ export default function Home() {
 
   return (
     <div className="relative">
-      <Navbar activeSection={activeSection} scrollToSection={scrollToSection} />
-
-      {/* Main Content */}
       <main>
         <div ref={(el) => setSectionRef("hero", el)}>
           <HeroSection scrollToSection={scrollToSection} />
-        </div>
-
-        <div id="despre" ref={(el) => setSectionRef("despre", el)}>
-          <AboutSection />
         </div>
 
         <div id="servicii" ref={(el) => setSectionRef("servicii", el)}>
@@ -85,22 +72,17 @@ export default function Home() {
           <GallerySection />
         </div>
 
-        <div id="parteneri" ref={(el) => setSectionRef("parteneri", el)}>
-          <PartnersSection />
-        </div>
-
         <div id="tehnologii" ref={(el) => setSectionRef("tehnologii", el)}>
           <PartnershipsSection />
         </div>
 
-        <div id="contact" ref={(el) => setSectionRef("contact", el)}>
-          <ContactSection />
-        </div>
+        {/* Eliminat: Secțiunea Contact */}
+        {/* <div id="contact" ref={(el) => setSectionRef("contact", el)}>
+  <ContactSection />
+</div> */}
 
         <FaqSection />
       </main>
-
-      <Footer scrollToSection={scrollToSection} />
     </div>
   )
 }

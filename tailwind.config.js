@@ -1,5 +1,4 @@
 module.exports = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
@@ -8,7 +7,6 @@ module.exports = {
     "*.{js,jsx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,
@@ -19,92 +17,43 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        "site-text-primary": "#ffffff",
+        border: "#2e3748", // Bordură albastru închis
+        input: "#1e293b", // Fundal input albastru foarte închis
+        ring: "#3b82f6", // Albastru pentru focus (păstrat)
+        background: "#0f172a", // Fundal principal negru-albăstrui închis
+        foreground: "#f8fafc", // Text alb cu tentă albăstruie
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#3b82f6", // Albastru pentru accente (păstrat)
+          foreground: "#ffffff", // Text alb pentru accente
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#1e40af", // Albastru închis
+          foreground: "#ffffff", // Text alb pentru secundar
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#ef4444", // Roșu pentru acțiuni distructive (păstrat)
+          foreground: "#ffffff", // Text alb pentru acțiuni distructive
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#1e293b", // Albastru închis pentru elemente mai puțin importante
+          foreground: "#94a3b8", // Gri-albastru pentru text secundar
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#60a5fa", // Albastru deschis pentru accente
+          foreground: "#0f172a", // Text închis pentru accente deschise
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        // Culori personalizate pentru site
-        site: {
-          // Culori principale
-          primary: "#3B82F6", // Albastru - pentru butoane principale, accente importante
-          "primary-hover": "#2563EB", // Albastru mai închis pentru hover
-          secondary: "#1F2937", // Gri închis - pentru fundaluri secundare
-          accent: "#3B82F6", // Albastru - pentru accente și evidențieri
-
-          // Fundaluri
-          "bg-main": "#000000", // Negru - fundalul principal
-          "bg-card": "#111827", // Gri foarte închis - pentru carduri
-          "bg-card-alt": "#1F2937", // Gri închis - pentru carduri alternative
-
-          // Borduri și separatoare
-          "border-light": "#374151", // Gri mediu - pentru borduri vizibile
-          "border-subtle": "#1F2937", // Gri închis - pentru borduri subtile
-
-          // Text
-          "text-primary": "#FFFFFF", // Alb - pentru text principal
-          "text-secondary": "#9CA3AF", // Gri deschis - pentru text secundar
-          "text-accent": "#3B82F6", // Albastru - pentru text accentuat
-
-          // Butoane
-          "btn-primary": "#3B82F6", // Albastru - pentru butoane principale
-          "btn-primary-hover": "#2563EB", // Albastru mai închis - pentru hover pe butoane principale
-          "btn-secondary": "#1F2937", // Gri închis - pentru butoane secundare
-          "btn-secondary-hover": "#374151", // Gri mediu - pentru hover pe butoane secundare
-
-          // Overlay și umbre
-          overlay: "rgba(0, 0, 0, 0.7)", // Negru cu transparență - pentru overlay-uri
-          shadow: "rgba(0, 0, 0, 0.5)", // Negru cu transparență - pentru umbre
+          DEFAULT: "#1e293b", // Fundal pentru carduri - albastru închis
+          foreground: "#f8fafc", // Text pentru carduri
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        lg: "0.5rem",
+        md: "0.375rem",
+        sm: "0.25rem",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

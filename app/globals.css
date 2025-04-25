@@ -109,3 +109,7 @@ html {
     @apply absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-site-bg-main via-site-bg-main/90 to-transparent z-10;
   }
 }
+section {
+  scroll-margin-top: 80px;
+  /* Ajustează valoarea în funcție de înălțimea navbarului */
+}

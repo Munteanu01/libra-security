@@ -10,7 +10,7 @@ export default function ServicesSection() {
   const filteredServices = activeTab === "all" ? services : services.filter((service) => service.category === activeTab)
 
   return (
-    <section id="servicii" className="py-12 md:py-16 bg-black relative overflow-hidden">
+    <section id="servicii" className="pt-20 md:py-16 bg-black relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Serviciile Noastre</h2>

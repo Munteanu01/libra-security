@@ -3,26 +3,24 @@ import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
-export default function Footer({ scrollToSection }) {
+export default function Footer() {
   const router = useRouter()
 
   // Definim secțiunile disponibile pentru navigare în footer (fără cele ascunse)
   const footerLinks = [
-    { id: "despre", label: "Despre noi", path: "/#despre" },
-    { id: "servicii", label: "Servicii", path: "/#servicii" },
-    { id: "lucrari", label: "Lucrări", path: "/#lucrari" },
-    { id: "parteneri", label: "Parteneri", path: "/#parteneri" },
-    { id: "contact", label: "Contact", path: "/#contact" },
+    { path: "/#servicii", label: "Servicii" },
+    { path: "/#lucrari", label: "Lucrări" },
+    { path: "/despre", label: "Despre Noi" },
+    { path: "/despre#parteneri", label: "Parteneri" },
+    { path: "/contact", label: "Contact" }, // Contact devine o pagină separată
   ]
 
-  const handleNavigation = (link) => {
-    if (typeof window !== "undefined") {
-      const section = document.getElementById(link.id)
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth" })
-      } else {
-        router.push(link.path)
-      }
+  const scrollToSectionWithOffset = (sectionId) => {
+    const section = document.getElementById(sectionId)
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+      })
     }
   }
 
@@ -49,9 +47,16 @@ export default function Footer({ scrollToSection }) {
             <h3 className="text-lg font-bold mb-4 text-center sm:text-left text-white">Link-uri rapide</h3>
             <ul className="space-y-2 text-center sm:text-left">
               {footerLinks.map((link) => (
-                <li key={link.id}>
+                <li key={link.path}>
                   <button
-                    onClick={() => handleNavigation(link)}
+                    onClick={() => {
+                      if (link.path.startsWith("/#")) {
+                        const sectionId = link.path.replace("/#", "")
+                        scrollToSectionWithOffset(sectionId)
+                      } else {
+                        router.push(link.path)
+                      }
+                    }}
                     className="text-gray-400 hover:text-blue-400 transition-colors text-sm"
                   >
                     {link.label}

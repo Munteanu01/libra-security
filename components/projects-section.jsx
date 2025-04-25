@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React from "react"
+
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronLeft, ChevronRight, X, Info } from "lucide-react"
@@ -13,6 +15,8 @@ export default function ProjectsSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [showImageInfo, setShowImageInfo] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const mobileCarouselRef = useRef(null)
+  const thumbnailsRef = useRef([])
 
   // Adaug un stil global pentru a ascunde scrollbar-ul
   useEffect(() => {
@@ -56,6 +60,14 @@ export default function ProjectsSection() {
     setSelectedProject(project)
     setCurrentImageIndex(0)
     document.body.style.overflow = "hidden"
+
+    // Reset thumbnail refs
+    thumbnailsRef.current = project.images.map(() => React.createRef())
+
+    // Force scroll after a short delay to ensure DOM is ready
+    setTimeout(() => {
+      centerActiveThumbnail(0)
+    }, 100)
   }
 
   const closePresentation = () => {
@@ -69,43 +81,68 @@ export default function ProjectsSection() {
   const nextImage = (e) => {
     e && e.stopPropagation()
     if (!selectedProject) return
-    setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length)
-    centerThumbnail((currentImageIndex + 1) % selectedProject.images.length)
+    const newIndex = (currentImageIndex + 1) % selectedProject.images.length
+    setCurrentImageIndex(newIndex)
+    centerActiveThumbnail(newIndex)
   }
 
   const prevImage = (e) => {
     e && e.stopPropagation()
     if (!selectedProject) return
-    setCurrentImageIndex((prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length)
-    centerThumbnail((currentImageIndex - 1 + selectedProject.images.length) % selectedProject.images.length)
+    const newIndex = (currentImageIndex - 1 + selectedProject.images.length) % selectedProject.images.length
+    setCurrentImageIndex(newIndex)
+    centerActiveThumbnail(newIndex)
   }
 
-  // Funcție pentru centrarea miniaturilor
-  const centerThumbnail = (index) => {
-    setTimeout(() => {
-      const container = document.getElementById("thumbnails-container")
-      const mobileContainer = document.getElementById("mobile-thumbnails-container")
-      const thumbnail = document.querySelector(`[data-index="${index}"]`)
+  // Improved function to center the active thumbnail
+  const centerActiveThumbnail = (index) => {
+    if (!selectedProject) return
 
-      if (container && thumbnail) {
-        const containerWidth = container.offsetWidth
-        const thumbnailWidth = thumbnail.offsetWidth
-        const scrollLeft = thumbnail.offsetLeft - containerWidth / 2 + thumbnailWidth / 2
-        container.scrollTo({ left: scrollLeft, behavior: "smooth" })
-      }
+    // For mobile view
+    const mobileContainer = document.getElementById("mobile-thumbnails-container")
+    if (mobileContainer) {
+      // Get all thumbnails
+      const thumbnails = mobileContainer.querySelectorAll("[data-index]")
+      if (thumbnails && thumbnails.length > 0) {
+        const activeThumb = thumbnails[index]
+        if (activeThumb) {
+          // Calculate position to center the active thumbnail
+          const containerWidth = mobileContainer.offsetWidth
+          const thumbLeft = activeThumb.offsetLeft
+          const thumbWidth = activeThumb.offsetWidth
 
-      if (mobileContainer && thumbnail) {
-        const containerWidth = mobileContainer.offsetWidth
-        const thumbnailWidth = thumbnail.offsetWidth
-        const scrollLeft = thumbnail.offsetLeft - containerWidth / 2 + thumbnailWidth / 2
-        mobileContainer.scrollTo({ left: scrollLeft, behavior: "smooth" })
+          // Center the thumbnail
+          mobileContainer.scrollTo({
+            left: thumbLeft - containerWidth / 2 + thumbWidth / 2,
+            behavior: "smooth",
+          })
+        }
       }
-    }, 100)
+    }
+
+    // For desktop view
+    const desktopContainer = document.getElementById("thumbnails-container")
+    if (desktopContainer) {
+      const thumbnails = desktopContainer.querySelectorAll("[data-index]")
+      if (thumbnails && thumbnails.length > 0) {
+        const activeThumb = thumbnails[index]
+        if (activeThumb) {
+          const containerWidth = desktopContainer.offsetWidth
+          const thumbLeft = activeThumb.offsetLeft
+          const thumbWidth = activeThumb.offsetWidth
+
+          desktopContainer.scrollTo({
+            left: thumbLeft - containerWidth / 2 + thumbWidth / 2,
+            behavior: "smooth",
+          })
+        }
+      }
+    }
   }
 
   const goToImage = (index) => {
     setCurrentImageIndex(index)
-    centerThumbnail(index)
+    centerActiveThumbnail(index)
   }
 
   const toggleImageInfo = () => {
@@ -123,13 +160,50 @@ export default function ProjectsSection() {
     return () => clearTimeout(timer)
   }, [selectedProject, currentImageIndex])
 
+  // Effect to ensure carousel moves when image changes
+  useEffect(() => {
+    if (selectedProject) {
+      // Force the carousel to center on the current image
+      centerActiveThumbnail(currentImageIndex)
+
+      // Try multiple times to ensure it works
+      setTimeout(() => centerActiveThumbnail(currentImageIndex), 50)
+      setTimeout(() => centerActiveThumbnail(currentImageIndex), 150)
+      setTimeout(() => centerActiveThumbnail(currentImageIndex), 300)
+    }
+  }, [currentImageIndex, selectedProject])
+
+  // Get visible thumbnails for mobile (only 3 at a time)
+  const getVisibleThumbnails = () => {
+    if (!selectedProject) return []
+
+    const totalImages = selectedProject.images.length
+    if (totalImages <= 3) return selectedProject.images
+
+    // Calculate which 3 images to show based on current index
+    let startIdx = currentImageIndex - 1
+    if (startIdx < 0) startIdx = totalImages - 1
+
+    const visibleImages = []
+    for (let i = 0; i < 3; i++) {
+      const idx = (startIdx + i) % totalImages
+      visibleImages.push({
+        image: selectedProject.images[idx],
+        index: idx,
+      })
+    }
+
+    return visibleImages
+  }
+
   return (
-    <section id="lucrari" className="py-12 md:py-16 bg-site-bg-main relative overflow-hidden">
+    <section id="lucrari" className="pt-20 md:py-16 bg-black relative overflow-hidden">
+      {/* Simple black background for Projects section - no gradients */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-site-text-primary">Lucrările Noastre</h2>
-          <div className="w-20 h-1 bg-site-primary mx-auto mb-4"></div>
-          <p className="text-site-text-secondary max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Lucrările Noastre</h2>
+          <div className="w-20 h-1 bg-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-400 max-w-3xl mx-auto font-medium">
             Explorați portofoliul nostru de proiecte finalizate cu succes pentru diverși clienți
           </p>
         </div>
@@ -140,8 +214,8 @@ export default function ProjectsSection() {
               key={category.value}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                 activeFilter === category.value
-                  ? "bg-site-primary text-white"
-                  : "bg-site-bg-card text-site-text-secondary hover:bg-site-bg-card-alt"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-900 text-gray-300 hover:bg-gray-800"
               }`}
               onClick={() => setActiveFilter(category.value)}
             >
@@ -154,7 +228,7 @@ export default function ProjectsSection() {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-site-bg-card flex flex-col h-full"
+              className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col h-full"
             >
               <div className="relative h-48 w-full">
                 <Image
@@ -166,19 +240,19 @@ export default function ProjectsSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="inline-block px-3 py-1 text-xs font-semibold bg-site-primary text-white rounded-full mb-2">
+                  <span className="inline-block px-3 py-1 text-xs font-semibold bg-blue-600 text-white rounded-full mb-2">
                     {project.categoryLabel}
                   </span>
-                  <h3 className="text-xl font-bold text-site-text-primary">{project.title}</h3>
+                  <h3 className="text-xl font-bold text-white">{project.title}</h3>
                 </div>
               </div>
 
               <div className="p-4 flex flex-col flex-grow">
                 <div className="flex-grow">
-                  <p className="text-site-text-secondary text-sm mb-4">{project.description}</p>
+                  <p className="text-gray-300 text-sm mb-4">{project.description}</p>
                 </div>
                 <Button
-                  className="bg-site-btn-primary hover:bg-site-btn-primary-hover text-white flex items-center px-4 py-2 text-sm rounded-md w-full justify-center mt-auto"
+                  className="bg-blue-600 hover:bg-blue-700 text-white flex items-center px-4 py-2 text-sm rounded-md w-full justify-center mt-auto"
                   onClick={() => openPresentation(project)}
                 >
                   Află mai multe
@@ -197,44 +271,47 @@ export default function ProjectsSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-site-bg-main z-50 flex"
+            className="fixed inset-0 bg-black z-50 flex"
           >
             {/* Layout pentru desktop - info în stânga, carousel în dreapta */}
             <div className="hidden md:flex w-full h-full">
               {/* Buton X în dreapta sus */}
               <button
                 onClick={closePresentation}
-                className="absolute top-4 right-4 z-10 bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary"
+                className="absolute top-4 right-4 z-10 text-white hover:text-gray-300"
               >
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6" />
               </button>
               {/* Panou informații - stânga */}
-              <div className="w-1/3 lg:w-1/4 bg-site-bg-main p-6 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-                <h3 className="text-xl font-bold text-site-text-primary mb-4">{selectedProject.title}</h3>
+              <div
+                className="w-1/3 lg:w-1/4 bg-gradient-to-br from-gray-900 to-gray-950 p-6 overflow-y-auto"
+                style={{ scrollbarWidth: "none" }}
+              >
+                <h3 className="text-xl font-bold text-white mb-4">{selectedProject.title}</h3>
 
                 <div className="space-y-4 mb-6">
                   <div>
-                    <p className="text-site-text-secondary text-sm">An finalizare</p>
-                    <p className="text-site-text-primary">{selectedProject.year}</p>
+                    <p className="text-gray-400 text-sm">An finalizare</p>
+                    <p className="text-white">{selectedProject.year}</p>
                   </div>
                   <div>
-                    <p className="text-site-text-secondary text-sm">Locație</p>
-                    <p className="text-site-text-primary">{selectedProject.location}</p>
+                    <p className="text-gray-400 text-sm">Locație</p>
+                    <p className="text-white">{selectedProject.location}</p>
                   </div>
                   <div>
-                    <p className="text-site-text-secondary text-sm">Client</p>
-                    <p className="text-site-text-primary">{selectedProject.client}</p>
+                    <p className="text-gray-400 text-sm">Client</p>
+                    <p className="text-white">{selectedProject.client}</p>
                   </div>
                 </div>
 
-                <p className="text-site-text-primary text-sm mb-6">{selectedProject.description}</p>
+                <p className="text-white text-sm mb-6">{selectedProject.description}</p>
 
                 <div>
-                  <h4 className="text-site-text-primary font-semibold mb-2">Detalii Proiect</h4>
-                  <ul className="text-site-text-primary text-sm space-y-2">
+                  <h4 className="text-white font-semibold mb-2">Detalii Proiect</h4>
+                  <ul className="text-white text-sm space-y-2">
                     {selectedProject.details.map((detail, index) => (
                       <li key={index} className="flex items-start">
-                        <span className="text-site-text-accent mr-2">•</span>
+                        <span className="text-blue-500 mr-2">•</span>
                         <span>{detail}</span>
                       </li>
                     ))}
@@ -249,17 +326,17 @@ export default function ProjectsSection() {
                     src={selectedProject.images[currentImageIndex] || "/placeholder.svg"}
                     alt={`${selectedProject.title} - Imagine ${currentImageIndex + 1}`}
                     fill
-                    className="object-contain"
+                    className="object-contain max-h-[calc(100vh-120px)]"
                     priority
                   />
                 </div>
 
                 {/* Miniaturi jos între săgeți */}
-                <div className="absolute bottom-0 left-0 right-0 bg-site-bg-main p-2">
+                <div className="absolute bottom-0 left-0 right-0 bg-black py-4 px-2 z-10">
                   <div className="flex items-center justify-center max-w-2xl mx-auto relative">
                     {/* Săgeata stânga */}
                     <button
-                      className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary flex-shrink-0 mx-2"
+                      className="bg-black hover:bg-gray-900 p-2 rounded-full text-white flex-shrink-0 mx-2"
                       onClick={prevImage}
                     >
                       <ChevronLeft className="h-5 w-5" />
@@ -276,7 +353,7 @@ export default function ProjectsSection() {
                           key={index}
                           data-index={index}
                           className={`relative h-16 w-24 mx-1 flex-shrink-0 rounded overflow-hidden cursor-pointer transition-all ${
-                            currentImageIndex === index ? "ring-2 ring-site-primary scale-105" : "opacity-70"
+                            currentImageIndex === index ? "ring-2 ring-blue-500 scale-105" : "opacity-70"
                           }`}
                           onClick={() => goToImage(index)}
                         >
@@ -289,7 +366,7 @@ export default function ProjectsSection() {
                         </div>
                       ))}
                       {selectedProject.images.length > 5 && (
-                        <div className="flex items-center justify-center px-2 text-site-text-primary text-sm">
+                        <div className="flex items-center justify-center px-2 text-white text-sm">
                           +{selectedProject.images.length - 5}
                         </div>
                       )}
@@ -297,7 +374,7 @@ export default function ProjectsSection() {
 
                     {/* Săgeata dreapta */}
                     <button
-                      className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary flex-shrink-0 mx-2"
+                      className="bg-black hover:bg-gray-900 p-2 rounded-full text-white flex-shrink-0 mx-2"
                       onClick={nextImage}
                     >
                       <ChevronRight className="h-5 w-5" />
@@ -308,12 +385,31 @@ export default function ProjectsSection() {
             </div>
 
             {/* Layout pentru mobile */}
-            <div className="flex flex-col md:hidden w-full h-full">
+            <div className="flex flex-col md:hidden w-full h-full bg-black">
               {/* Carousel */}
               {!showImageInfo && (
                 <div className="flex-1 relative">
+                  {/* Fixed controls at top */}
+                  <div className="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-30 bg-black">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={toggleImageInfo}
+                        className="bg-black hover:bg-gray-900 p-2 rounded-full text-white"
+                      >
+                        <Info className="h-5 w-5" />
+                      </button>
+                      <div className="bg-black text-white px-2 py-1 rounded text-sm">
+                        {currentImageIndex + 1} / {selectedProject.images.length}
+                      </div>
+                    </div>
+                    <button onClick={closePresentation} className="text-white hover:text-gray-300">
+                      <X className="h-6 w-6" />
+                    </button>
+                  </div>
+
+                  {/* Image container with padding to avoid overlap with controls */}
                   <div
-                    className="relative w-full h-full"
+                    className="relative w-full h-full pt-16 flex items-center justify-center"
                     onTouchStart={(e) => {
                       if (typeof document !== "undefined") {
                         const touchDown = e.touches[0].clientX
@@ -341,59 +437,42 @@ export default function ProjectsSection() {
                       }
                     }}
                   >
-                    <Image
-                      src={selectedProject.images[currentImageIndex] || "/placeholder.svg"}
-                      alt={`${selectedProject.title} - Imagine ${currentImageIndex + 1}`}
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-
-                  {/* Controale sus */}
-                  <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={toggleImageInfo}
-                        className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary"
-                      >
-                        <Info className="h-5 w-5" />
-                      </button>
-                      <div className="bg-site-overlay text-site-text-primary px-2 py-1 rounded text-sm">
-                        {currentImageIndex + 1} / {selectedProject.images.length}
-                      </div>
+                    <div className="relative w-full h-[calc(100vh-160px)] flex items-center justify-center">
+                      <Image
+                        src={selectedProject.images[currentImageIndex] || "/placeholder.svg"}
+                        alt={`${selectedProject.title} - Imagine ${currentImageIndex + 1}`}
+                        fill
+                        className="object-contain"
+                        priority
+                      />
                     </div>
-                    <button
-                      onClick={closePresentation}
-                      className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary"
-                    >
-                      <X className="h-5 w-5" />
-                    </button>
                   </div>
 
-                  {/* Miniaturi jos între săgeți pentru mobile */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-site-bg-main p-2">
+                  {/* Mobile thumbnails - only show 3 at a time */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-black py-4 px-2 z-10">
                     <div className="flex items-center justify-center relative">
                       {/* Săgeata stânga */}
                       <button
-                        className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary flex-shrink-0 mx-1"
+                        className="bg-black hover:bg-gray-900 p-2 rounded-full text-white flex-shrink-0 mx-1"
                         onClick={prevImage}
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
 
-                      {/* Container cu miniaturi între săgeți */}
+                      {/* Container cu miniaturi între săgeți - doar 3 imagini vizibile */}
                       <div
                         id="mobile-thumbnails-container"
+                        ref={mobileCarouselRef}
                         className="flex overflow-x-auto hide-scrollbar max-w-full"
                         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                       >
-                        {selectedProject.images.slice(0, 3).map((image, index) => (
+                        {/* Show all thumbnails but make them scrollable */}
+                        {selectedProject.images.map((image, index) => (
                           <div
                             key={index}
                             data-index={index}
                             className={`relative h-14 w-20 mx-1 flex-shrink-0 rounded overflow-hidden cursor-pointer transition-all ${
-                              currentImageIndex === index ? "ring-2 ring-site-primary scale-105" : "opacity-70"
+                              currentImageIndex === index ? "ring-2 ring-blue-500 scale-105" : "opacity-70"
                             }`}
                             onClick={() => goToImage(index)}
                           >
@@ -405,16 +484,11 @@ export default function ProjectsSection() {
                             />
                           </div>
                         ))}
-                        {selectedProject.images.length > 3 && (
-                          <div className="flex items-center justify-center px-2 text-site-text-primary text-sm">
-                            +{selectedProject.images.length - 3}
-                          </div>
-                        )}
                       </div>
 
                       {/* Săgeata dreapta */}
                       <button
-                        className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary flex-shrink-0 mx-1"
+                        className="bg-black hover:bg-gray-900 p-2 rounded-full text-white flex-shrink-0 mx-1"
                         onClick={nextImage}
                       >
                         <ChevronRight className="h-4 w-4" />
@@ -427,43 +501,43 @@ export default function ProjectsSection() {
               {/* Panou informații pentru mobile - ocupă tot ecranul când este deschis */}
               {showImageInfo && (
                 <div
-                  className="fixed inset-0 bg-site-bg-main h-screen w-screen overflow-y-auto"
+                  className="fixed inset-0 bg-gradient-to-br from-gray-900 to-gray-950 h-screen w-screen overflow-y-auto"
                   style={{ scrollbarWidth: "none" }}
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-xl font-bold text-site-text-primary">{selectedProject.title}</h3>
+                      <h3 className="text-xl font-bold text-white pr-10">{selectedProject.title}</h3>
                       <button
                         onClick={toggleImageInfo}
-                        className="bg-site-overlay hover:bg-site-shadow p-2 rounded-full text-site-text-primary"
+                        className="text-white hover:text-gray-300 absolute top-6 right-5"
                       >
-                        <X className="h-5 w-5" />
+                        <X className="h-6 w-6" />
                       </button>
                     </div>
 
                     <div className="space-y-4 mb-6">
                       <div>
-                        <p className="text-site-text-secondary text-sm">An finalizare</p>
-                        <p className="text-site-text-primary">{selectedProject.year}</p>
+                        <p className="text-gray-400 text-sm">An finalizare</p>
+                        <p className="text-white">{selectedProject.year}</p>
                       </div>
                       <div>
-                        <p className="text-site-text-secondary text-sm">Locație</p>
-                        <p className="text-site-text-primary">{selectedProject.location}</p>
+                        <p className="text-gray-400 text-sm">Locație</p>
+                        <p className="text-white">{selectedProject.location}</p>
                       </div>
                       <div>
-                        <p className="text-site-text-secondary text-sm">Client</p>
-                        <p className="text-site-text-primary">{selectedProject.client}</p>
+                        <p className="text-gray-400 text-sm">Client</p>
+                        <p className="text-white">{selectedProject.client}</p>
                       </div>
                     </div>
 
-                    <p className="text-site-text-primary text-sm mb-6">{selectedProject.description}</p>
+                    <p className="text-white text-sm mb-6">{selectedProject.description}</p>
 
                     <div>
-                      <h4 className="text-site-text-primary font-semibold mb-2">Detalii Proiect</h4>
-                      <ul className="text-site-text-primary text-sm space-y-2">
+                      <h4 className="text-white font-semibold mb-2">Detalii Proiect</h4>
+                      <ul className="text-white text-sm space-y-2">
                         {selectedProject.details.map((detail, index) => (
                           <li key={index} className="flex items-start">
-                            <span className="text-site-text-accent mr-2">•</span>
+                            <span className="text-blue-500 mr-2">•</span>
                             <span>{detail}</span>
                           </li>
                         ))}
