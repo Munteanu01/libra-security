@@ -10,6 +10,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ro" suppressHydrationWarning>
+      <head>
+  <meta name="theme-color" content="#0f172a" />
+</head>
       <body>
         <Navbar />
         <main>{children}</main>

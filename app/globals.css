@@ -4,16 +4,21 @@
 
 @layer base {
   :root {
-    --background: #0f172a; /* Înlocuiește cu o valoare fixă */
-    --foreground: #f8fafc;
+    --background: #0f172a; /* Hexadecimal */
+    --foreground: rgb(248, 250, 252); /* RGB */
     --primary: #3b82f6;
+    --primary-rgb: 59, 130, 246;
     --secondary: #1e40af;
     --muted: #1e293b;
     --accent: #60a5fa;
     --muted-foreground: #94a3b8;
   }
 }
-
+* {
+  margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -93,8 +98,18 @@ html {
     @apply border-gray-300; /* Replace with your desired border style */
   }
 }
-
+.button {
+  background-color: var(--primary);
+  background-color: rgba(var(--primary-rgb), 0.9);
+  /* Fallback pentru transparență */
+}
 section {
   scroll-margin-top: 80px;
   /* Ajustează valoarea în funcție de înălțimea navbarului */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light; /* Forțează tema light */
+  }
 }

@@ -17,6 +17,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        background: "#0f172a",
+        foreground: "#f8fafc",
+        primary: "#3b82f6",
         "site-text-primary": "#ffffff",
         border: "#2e3748", // Bordură albastru închis
         input: "#1e293b", // Fundal input albastru foarte închis
