@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro" suppressHydrationWarning>
       <head>
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="color-scheme" content="light dark"></meta>
 </head>
       <body>
         <Navbar />

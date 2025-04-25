@@ -1,7 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+    /* Forțează tema light */
+  }
+}
 @layer base {
   :root {
     --background: #0f172a; /* Hexadecimal */
@@ -108,8 +113,3 @@ section {
   /* Ajustează valoarea în funcție de înălțimea navbarului */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: light; /* Forțează tema light */
-  }
-}
