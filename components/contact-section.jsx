@@ -8,7 +8,7 @@ export default function ContactDesign4() {
   const [activeTab, setActiveTab] = useState("form")
 
   return (
-    <section id="contact-4" className=" pt-20 bg-black relative overflow-hidden">
+    <section id="contact-4" className=" pt-20 pb-10 bg-black relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">Contactați-ne</h2>
@@ -23,23 +23,24 @@ export default function ContactDesign4() {
           <div className="flex justify-center mb-6">
             <div className="bg-gradient-to-br from-gray-900 to-gray-950 p-1 rounded-lg inline-flex">
               <button
-                onClick={() => setActiveTab("form")}
-                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
-                  activeTab === "form" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
-                }`}
-              >
-                <MessageSquare className="h-4 w-4 inline mr-2" />
-                Formular de contact
-              </button>
-              <button
-                onClick={() => setActiveTab("info")}
-                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
-                  activeTab === "info" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
-                }`}
-              >
-                <Info className="h-4 w-4 inline mr-2" />
-                Informații de contact
-              </button>
+  onClick={() => setActiveTab("form")}
+  className={`flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-all ${
+    activeTab === "form" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+  }`}
+>
+  <MessageSquare className="h-4 w-4" />
+  Formular de contact
+</button>
+<button
+  onClick={() => setActiveTab("info")}
+  className={`flex items-center justify-center gap-2 px-6 py-2 rounded-md text-sm font-medium transition-all ${
+    activeTab === "info" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+  }`}
+>
+  <Info className="h-4 w-4" />
+  Informații de contact
+</button>
+
             </div>
           </div>
 

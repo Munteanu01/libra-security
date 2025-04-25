@@ -12,7 +12,7 @@ export default function FaqSection() {
   }
 
   return (
-    <section className="py-12 bg-black relative overflow-hidden">
+    <section className="pt-12 pb-10 bg-black relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Întrebări Frecvente</h2>

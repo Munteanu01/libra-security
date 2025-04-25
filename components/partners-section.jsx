@@ -17,7 +17,7 @@ export default function PartnersSection() {
   const { gridClasses, itemClasses } = getPartnersGridLayout()
 
   return (
-    <section id="parteneri" className="pt-20 md:py-16 bg-black relative overflow-hidden">
+    <section id="parteneri" className="pt-20 md:py-16 pb-10 bg-black relative overflow-hidden">
       {/* Removed all gradients - pure black background */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">

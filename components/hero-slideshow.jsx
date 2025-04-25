@@ -11,7 +11,7 @@ export default function HeroSection({ scrollToSection }) {
     setIsMounted(true)
     const videoTimer = setTimeout(() => {
       setVideoVisible(true)
-    }, 10) // Poți ajusta această valoare dacă vrei o întârziere minimă
+    }, 500) // Poți ajusta această valoare dacă vrei o întârziere minimă
 
     return () => {
       clearTimeout(videoTimer)
@@ -30,7 +30,7 @@ export default function HeroSection({ scrollToSection }) {
     <section id="hero" className="relative min-h-screen overflow-hidden bg-black">
       {/* Background video with fade-in animation */}
       {isMounted && (
-        <div 
+        <div
           className="absolute inset-0 z-0 transition-opacity duration-1000"
           style={{ opacity: videoVisible ? 1 : 0 }}
         >
@@ -42,9 +42,9 @@ export default function HeroSection({ scrollToSection }) {
             playsInline
             preload="auto"
             className="w-full h-full object-cover"
-            style={{ 
+            style={{
               objectFit: "cover",
-              filter: "brightness(0.6)" 
+              filter: "brightness(0.6)",
             }}
           >
             <source src="/videos/video-hero.mp4" type="video/mp4" />
@@ -62,9 +62,7 @@ export default function HeroSection({ scrollToSection }) {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
               Soluții de Securitate Profesionale
             </h1>
-            <p className="text-lg sm:text-xl text-white/90">
-              Protejăm ce contează pentru dumneavoastră
-            </p>
+            <p className="text-lg sm:text-xl text-white/90">Protejăm ce contează pentru dumneavoastră</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -90,17 +88,35 @@ export default function HeroSection({ scrollToSection }) {
       {/* XL screen layout - with full-height background panel */}
       <div className="hidden xl:block relative z-10 h-screen">
         {/* Left content panel - full height, only visible on xl */}
-        <div className="absolute top-0 bottom-0 left-0 w-1/2 bg-black/50 backdrop-blur-sm border-r border-white/10">
+        <div className="absolute top-0 bottom-0 left-0 w-1/2 bg-black/50 backdrop-blur-sm">
+          {/* Custom divider that fades out from middle in both directions */}
+          <div className="absolute top-0 right-0 bottom-0 w-px">
+            {/* Middle section - most visible part */}
+            <div className="absolute top-1/2 h-[10%] w-full bg-white/20 transform -translate-y-1/2"></div>
+
+            {/* Top half with upward fade - no glow */}
+            <div
+              className="absolute top-0 h-[45%] w-full"
+              style={{
+                background: "linear-gradient(to top, rgba(255,255,255,0.2), transparent)",
+              }}
+            ></div>
+
+            {/* Bottom half with downward fade - no glow */}
+            <div
+              className="absolute bottom-0 h-[45%] w-full"
+              style={{
+                background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)",
+              }}
+            ></div>
+          </div>
+
           {/* Content container - vertically centered but slightly above exact center */}
           <div className="h-full flex flex-col justify-center" style={{ paddingTop: "0", paddingBottom: "10vh" }}>
             <div className="px-12 max-w-xl mx-auto">
               <div className="mb-16">
-                <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
-                  Soluții de Securitate Profesionale
-                </h1>
-                <p className="text-2xl text-white/90">
-                  Protejăm ce contează pentru dumneavoastră
-                </p>
+                <h1 className="text-5xl font-bold text-white mb-6 leading-tight">Soluții de Securitate Profesionale</h1>
+                <p className="text-2xl text-white/90">Protejăm ce contează pentru dumneavoastră</p>
               </div>
 
               <div className="flex flex-row gap-4">
