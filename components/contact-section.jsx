@@ -132,19 +132,7 @@ export default function ContactDesign4() {
                     ></textarea>
                   </div>
 
-                  <div className="flex items-center">
-                    <input
-                      id="terms"
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-600 rounded"
-                    />
-                    <label htmlFor="terms" className="ml-2 block text-sm text-gray-400">
-                      Sunt de acord cu{" "}
-                      <a href="#" className="text-blue-500 hover:underline">
-                        termenii și condițiile
-                      </a>
-                    </label>
-                  </div>
+                  
 
                   <Button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
                     <Send className="h-4 w-4" />

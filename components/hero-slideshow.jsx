@@ -27,7 +27,7 @@ export default function HeroSection({ scrollToSection }) {
   }, [isMounted])
 
   return (
-    <section id="hero" className="relative min-h-screen overflow-hidden bg-black">
+    <section id="hero" className="relative h-screen overflow-hidden bg-black">
       {/* Background video with fade-in animation */}
       {isMounted && (
         <div

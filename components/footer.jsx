@@ -6,21 +6,28 @@ import { useRouter } from "next/navigation"
 export default function Footer() {
   const router = useRouter()
 
-  // Definim secțiunile disponibile pentru navigare în footer (fără cele ascunse)
   const footerLinks = [
     { path: "/#servicii", label: "Servicii" },
     { path: "/#lucrari", label: "Lucrări" },
     { path: "/despre", label: "Despre Noi" },
     { path: "/despre#parteneri", label: "Parteneri" },
-    { path: "/contact", label: "Contact" }, // Contact devine o pagină separată
+    { path: "/contact", label: "Contact" },
   ]
 
-  const scrollToSectionWithOffset = (sectionId) => {
-    const section = document.getElementById(sectionId)
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-      })
+  const handleFooterNavigation = (e, link) => {
+    e.preventDefault()
+
+    if (link.path.startsWith("/#")) {
+      const sectionId = link.path.replace("/#", "")
+      const section = document.getElementById(sectionId)
+
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" })
+      } else {
+        router.push(link.path)
+      }
+    } else {
+      router.push(link.path)
     }
   }
 
@@ -49,14 +56,7 @@ export default function Footer() {
               {footerLinks.map((link) => (
                 <li key={link.path}>
                   <button
-                    onClick={() => {
-                      if (link.path.startsWith("/#")) {
-                        const sectionId = link.path.replace("/#", "")
-                        scrollToSectionWithOffset(sectionId)
-                      } else {
-                        router.push(link.path)
-                      }
-                    }}
+                    onClick={(e) => handleFooterNavigation(e, link)}
                     className="text-gray-400 hover:text-blue-400 transition-colors text-sm"
                   >
                     {link.label}
