@@ -87,7 +87,10 @@ export default function Footer() {
             <ul className="space-y-2 text-center sm:text-left">
               {legalLinks.map((link) => (
                 <li key={link.path}>
-                  <a href={link.path} className="hover:text-blue-400">
+                  <a
+                    href={link.path}
+                    className="text-gray-400 hover:text-blue-400 transition-colors text-sm"
+                  >
                     {link.label}
                   </a>
                 </li>
