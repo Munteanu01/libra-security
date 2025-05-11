@@ -1,17 +1,22 @@
 "use client"
 import Link from "next/link"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 export default function Footer() {
   const router = useRouter()
 
-  const footerLinks = [
+  const quickLinks = [
     { path: "/#servicii", label: "Servicii" },
     { path: "/#lucrari", label: "Lucrări" },
     { path: "/despre", label: "Despre Noi" },
     { path: "/despre#parteneri", label: "Parteneri" },
     { path: "/contact", label: "Contact" },
+  ]
+
+  const legalLinks = [
+    { path: "/legal/politica-confidentialitate", label: "Politica de Confidențialitate" },
+    { path: "/legal/termeni-conditii", label: "Termeni și Condiții" },
+    { path: "/legal/politica-cookie", label: "Politica de Cookie-uri" },
   ]
 
   const handleFooterNavigation = (e, link) => {
@@ -34,26 +39,11 @@ export default function Footer() {
   return (
     <footer className="bg-black text-gray-300 py-12 border-t border-gray-800">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="flex flex-col items-center sm:items-start">
-            <Link href="/" className="flex items-center mb-4">
-              <Image
-                src="/images/logo-white.png"
-                alt="Libra Security Logo"
-                width={180}
-                height={60}
-                className="h-16 w-auto"
-              />
-            </Link>
-            <p className="text-gray-400 text-center sm:text-left text-sm">
-              Soluții de securitate de încredere pentru casa și afacerea dumneavoastră
-            </p>
-          </div>
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <h3 className="text-lg font-bold mb-4 text-center sm:text-left text-white">Link-uri rapide</h3>
             <ul className="space-y-2 text-center sm:text-left">
-              {footerLinks.map((link) => (
+              {quickLinks.map((link) => (
                 <li key={link.path}>
                   <button
                     onClick={(e) => handleFooterNavigation(e, link)}
@@ -93,11 +83,34 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4 text-center sm:text-left text-white">Program</h3>
-            <div className="text-gray-400 text-center sm:text-left text-sm">
-              <p className="mb-2">Luni - Vineri: 9:00 - 18:00</p>
-              <p>Sâmbătă - Duminică: Închis</p>
-            </div>
+            <h3 className="text-lg font-bold mb-4 text-center sm:text-left text-white">Documente Legale</h3>
+            <ul className="space-y-2 text-center sm:text-left">
+              {legalLinks.map((link) => (
+                <li key={link.path}>
+                  <a href={link.path} className="hover:text-blue-400">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold mb-4 text-center sm:text-left text-white">Autorizații</h3>
+            <ul className="space-y-2 text-center sm:text-left text-sm text-gray-400">
+              <li>
+                <a href="/pdf/autorizatie-igsu.pdf" target="_blank" className="hover:text-blue-400">
+                  Autorizație IGSU – nr. 12345 / 01.03.2024
+                </a>
+              </li>
+              <li>
+                <a href="/pdf/aviz-igpr.pdf" target="_blank" className="hover:text-blue-400">
+                  Aviz IGPR – nr. 67890 / 15.04.2023
+                </a>
+              </li>
+              <li>Certificat ISO 9001 – emis 2023</li>
+              <li>Certificat ISO 14001 – emis 2023</li>
+            </ul>
           </div>
         </div>
 

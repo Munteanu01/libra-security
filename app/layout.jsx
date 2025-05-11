@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <head>
   <meta name="color-scheme" content="light dark"></meta>
 </head>
-      <body>
+      <body className="bg-black">
         <Navbar />
         <main>{children}</main>
         <Footer />
